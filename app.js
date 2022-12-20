@@ -14,11 +14,21 @@ app.get("/send-email", async (req, res) => {
     },
   });
 
-  try {
-    return res.status(200).json({ message: "E-mail enviado com sucesso!!!" });
-  } catch (erro) {
-    return res.status(500);
-  }
+  var message = {
+    from: "noreplay@celke.com.br",
+    to: "leonardo@celke.com.br",
+    subject: "Consegui mandar o email!!",
+    text: "Boa Léoo!!",
+    html: "<p>HTML version of the message</p>",
+  };
+
+  transport.sendMail(message, function (err) {
+    if (err)
+      return res
+        .status(400)
+        .json({ mensagem: "Erro: email não enviado com sucesso" });
+  });
+  return res.status(200).json({ message: "E-mail enviado com sucesso!" });
 });
 
 app.get("/", (req, res) => {
